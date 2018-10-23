@@ -1,7 +1,9 @@
-import React, { Component } from 'react';
-import './app.css';
+const React = require('react');
+const connect = require('react-redux').connect;
 
-class App extends Component {
+const getGBMData = require('../shared/domain/gbm-domain').actions.getGBMData;
+
+class App extends React.Component {
     constructor() {
         super();
         this.state = {
@@ -10,19 +12,30 @@ class App extends Component {
     }
 
     componentDidMount() {
-        fetch('/api/getUsername')
-            .then(res => res.json())
-            .then(user => this.setState({ username: user.username }));
+        this.props.getGBMData();
     }
 
     render() {
         const { username } = this.state;
         return (
             <div className="home-background">
-                {username ? <h1>{`Hello ${username}`}</h1> : <h1>Loading.. please wait!</h1>}
+                <h1>Loading.. please wait!</h1>
             </div>
         );
     }
 }
 
-export default App;
+App.propTypes = {
+    resultObj: React.PropTypes.shape({}),
+    getGBMData: React.PropTypes.func,
+};
+
+const mapStateToProps = state => ({
+    resultObj: state.resultObj,
+});
+
+const mapDispatchToProps = dispatch => ({
+    getGBMData: () => dispatch(getGBMData()),
+});
+
+module.exports = connect(mapStateToProps, mapDispatchToProps)(App);

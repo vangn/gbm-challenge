@@ -1,9 +1,23 @@
+require('babel-register');
+const compression = require('compression');
+const bodyparser = require('body-parser');
+
+const GBMRoutes = require('./routes/gbm-routes');
 const express = require('express');
-const os = require('os');
+const path = require('path');
 
 const app = express();
+const port = 3000;
+
+app.use(compression());
+app.use(bodyparser.json({ limit: '5MB', extended: true }));
+
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
 
 app.use(express.static('dist'));
-app.get('/api/getUsername', (req, res) => res.send({ username: os.userInfo().username }));
 
-app.listen(3000, () => console.log('Listening on port 3000!'));
+new GBMRoutes(app);
+
+app.listen(port, '0.0.0.0');
+console.log(`Server is Up and Running at Port ${port}`);

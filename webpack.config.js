@@ -1,49 +1,63 @@
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 const outputDirectory = 'dist';
 
+const nodeModulesDir = `${__dirname}/node_modules`;
+
+const vendors = {
+    react: `${nodeModulesDir}/react/dist/react.min.js`,
+    'react-dom': `${nodeModulesDir}/react-dom/dist/react-dom.min.js`,
+    'react-redux': `${nodeModulesDir}/react-redux/dist/react-redux.min.js`,
+};
+
 module.exports = {
+    entry: {
+        vendor: [
+            'react-redux',
+            'react',
+            'react-dom',
+        ],
+        index: './src/client/index.jsx',
+    },
+    output: {
+        path: path.join(__dirname, outputDirectory),
+        publicPath: '/dist/',
+        filename: '[name].entry.js',
+        chunkFilename: '[id].[name].js',
+    },
+    module: {
+        noParse: [
+            new RegExp('^react$'),
+            new RegExp('^react-dom$'),
+            new RegExp('^react-redux$'),
+        ],
+        rules: [
+            {
+                test: /\.jsx?$/,
+                exclude: /node_modules/,
+                use: 'babel-loader',
+            },
+            {
+                test: /\.css$/,
+                loaders: ['style-loader', 'css-loader'],
+            },
+            {
+                test: /\.(png|jpg|woff|woff2|eot|ttf|svg)$/,
+                loader: 'url-loader?limit=100000',
+            },
+        ],
+    },
     resolve: {
         extensions: ['.js', '.jsx'],
+        alias: vendors,
+        modules: [path.resolve(__dirname, 'src'), 'node_modules'],
     },
-  entry: './src/client/index.jsx',
-  output: {
-    path: path.join(__dirname, outputDirectory),
-    filename: 'bundle.js'
-  },
-  module: {
-    rules: [
-      {
-        test: /\.jsx$/,
-        exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader'
-        }
-      },
-      {
-        test: /\.css$/,
-        loaders: ['style-loader', 'css-loader']
-      },
-      {
-        test: /\.(png|jpg|woff|woff2|eot|ttf|svg)$/,
-        loader: 'url-loader?limit=100000'
-      }
-    ]
-  },
-  devServer: {
-    port: 3000,
-    open: true,
-    proxy: {
-      '/api': 'http://localhost:3000'
-    }
-  },
-  plugins: [
-    new CleanWebpackPlugin([outputDirectory]),
-    new HtmlWebpackPlugin({
-      template: './public/index.html',
-      favicon: './public/assets/favicon.ico'
-    })
-  ]
+    plugins: [
+        new CleanWebpackPlugin([outputDirectory]),
+    ],
+    externals: {
+        request: 'request',
+        window: 'window',
+    },
 };

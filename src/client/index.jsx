@@ -1,8 +1,18 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
+const React = require('react');
+const ReactDOM = require('react-dom');
+const Provider = require('react-redux').Provider;
+const App = require('./App');
+
+const getStore = require('../shared/domain/stores/store-generator').getGBMStore;
+
+const initialState = window.__PRELOADED_STATE__;
+const store = getStore(initialState);
+
+require('./app.css');
 
 ReactDOM.render(
-    <App />,
+    <Provider store={store}>
+        <App />
+    </Provider>,
     document.getElementById('app'),
 );
