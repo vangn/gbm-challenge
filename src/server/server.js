@@ -9,13 +9,15 @@ const path = require('path');
 const app = express();
 const port = 3000;
 
+const staticCustomAssets = path.join(__dirname, '../..');
+
 app.use(compression());
 app.use(bodyparser.json({ limit: '5MB', extended: true }));
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-app.use(express.static('dist'));
+app.use('/dist', express.static(path.join(staticCustomAssets, 'dist')));
 
 new GBMRoutes(app);
 

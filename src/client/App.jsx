@@ -1,41 +1,34 @@
 const React = require('react');
 const connect = require('react-redux').connect;
 
-const getGBMData = require('../shared/domain/gbm-domain').actions.getGBMData;
+const Login = require('./Login');
+const GBMGraph = require('./GBMGraph');
+
+const GBM_FLOWS = require('../shared/domain/constants/gbm-flows');
 
 class App extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            username: '',
-        };
-    }
-
-    componentDidMount() {
-        this.props.getGBMData();
-    }
-
     render() {
-        const { username } = this.state;
         return (
-            <div className="home-background">
-                <h1>Loading.. please wait!</h1>
-            </div>
+            (() => {
+                switch (this.props.sectionId) {
+                    case GBM_FLOWS.SHOW_LOGIN:
+                        return <Login />;
+                    case GBM_FLOWS.SHOW_GRAPH:
+                        return <GBMGraph />;
+                    default :
+                        return '';
+                }
+            })()
         );
     }
 }
 
 App.propTypes = {
-    resultObj: React.PropTypes.shape({}),
-    getGBMData: React.PropTypes.func,
+    sectionId: React.PropTypes.number,
 };
 
 const mapStateToProps = state => ({
-    resultObj: state.resultObj,
+    sectionId: state.sectionId,
 });
 
-const mapDispatchToProps = dispatch => ({
-    getGBMData: () => dispatch(getGBMData()),
-});
-
-module.exports = connect(mapStateToProps, mapDispatchToProps)(App);
+module.exports = connect(mapStateToProps, null)(App);

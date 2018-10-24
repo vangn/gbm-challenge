@@ -1,5 +1,6 @@
 class GBMApi {
     constructor(requester) {
+        console.log('::::::: constructor', requester);
         this.requester = requester;
     }
 

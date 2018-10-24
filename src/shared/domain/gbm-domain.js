@@ -1,15 +1,16 @@
 const initialState = require('./states/gbm-initial-state.json');
-const ClientRequester = require('../../shared/requester/client-requester');
+const Requester = require('../../shared/requester/client-requester');
 const GBMApi = require('../api/gbm-internal-api');
 const GBM_FLOWS = require('./constants/gbm-flows');
 
-const requester = new ClientRequester();
+const requester = new Requester();
 const api = new GBMApi(requester);
 
 const EVENTS = {
     SHOW_LOADING: 'SHOW_LOADING',
     REMOVE_LOADING: 'REMOVE_LOADING',
     SHOW_ERROR: 'SHOW_ERROR',
+    SET_SELECTED_SECTION: 'SET_SELECTED_SECTION',
     SET_GBM_DATA: 'SET_GBM_DATA',
 };
 
@@ -19,18 +20,21 @@ const removeLoading = () => ({ type: EVENTS.REMOVE_LOADING });
 
 const showError = message => (dispatch) => { dispatch({ type: EVENTS.SHOW_ERROR, message }); };
 
+const selectSection = sectionId => ({ type: EVENTS.SET_SELECTED_SECTION, sectionId });
+
 const setGBMData = result => ({ type: EVENTS.SET_GBM_DATA, result });
 
 const getGBMData = () => (dispatch) => {
-    console.log('::::::::::');
-    dispatch(showLoading());
+    // dispatch(showLoading());
     api.getGBMData()
         .then((response) => {
             dispatch(setGBMData(response));
-            dispatch(removeLoading());
+            dispatch(selectSection(GBM_FLOWS.SHOW_GRAPH));
+            // dispatch(removeLoading());
         })
         .catch((error) => {
-            dispatch(removeLoading());
+            // dispatch(removeLoading());
+            dispatch(selectSection(GBM_FLOWS.SHOW_LOGIN));
             dispatch(showError(error));
         });
 };
@@ -58,6 +62,11 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 showLoading: false,
+            };
+        case EVENTS.SET_SELECTED_SECTION:
+            return {
+                ...state,
+                sectionId: action.sectionId,
             };
         case EVENTS.SET_GBM_DATA:
             return {

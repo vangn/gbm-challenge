@@ -1,7 +1,7 @@
 const GBM_FLOWS = {
-    SHOW_LOGIN: 0,
-    SHOW_ERROR: 1,
-    GO_TO_APP: 14,
+    SHOW_LOGIN: 1,
+    SHOW_GRAPH: 2,
+    SHOW_ERROR: 3,
 };
 
 module.exports = GBM_FLOWS;
