@@ -1,47 +1,145 @@
 const React = require('react');
 const connect = require('react-redux').connect;
-const { LineChart } = require('react-easy-chart');
+const { TimeSeries } = require('pondjs');
+const {
+    Charts,
+    ChartContainer,
+    ChartRow,
+    YAxis,
+    LineChart,
+} = require('react-timeseries-charts');
 
 const getGBMData = require('../shared/domain/gbm-domain').actions.getGBMData;
 
 class GBMGraph extends React.Component {
     constructor() {
         super();
-        const initialWidth = 500;
         this.state = {
-            username: 'Hello there!',
-            windowWidth: initialWidth - 100,
-            componentWidth: 300,
+            title: 'IPC indicator (Índice de Precios y Cotizaciones)',
+            labelPrice: 'Price ($)',
+            width: 800,
+            height: 182,
         };
     }
 
     componentDidMount() {
-        console.log(':::::::: componentDidMount');
         this.props.getGBMData();
+        this.updateGraphDimensions();
+        window.addEventListener('resize', this.updateGraphDimensions.bind(this));
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.updateGraphDimensions.bind(this));
+    }
+
+    updateGraphDimensions() {
+        if (window.innerWidth < 500) {
+            this.setState({ width: 450, height: 102 });
+        } else {
+            const updateWidth = window.innerWidth - 100;
+            const updateHeight = Math.round(updateWidth / 4.4);
+            this.setState({ width: updateWidth, height: updateHeight });
+        }
     }
 
     render() {
-        const { username } = this.state;
+        const chartStyle = {
+            background: '#201d1e',
+            borderRadius: 8,
+            borderStyle: 'solid',
+            borderWidth: 1,
+            borderColor: '#232122',
+        };
+
+        const axisStyle = {
+            label: {
+                stroke: 'none',
+                fill: '#AAA',
+                fontWeight: 500,
+                fontSize: 20,
+            },
+            values: {
+                stroke: 'none',
+                fill: '#888',
+                fontWeight: 100,
+                fontSize: 11,
+            },
+            ticks: {
+                fill: 'none',
+                stroke: '#AAA',
+                opacity: 0.2,
+            },
+            axis: {
+                fill: 'none',
+                stroke: '#AAA',
+                opacity: 1,
+            },
+        };
+
+        const titleStyle = {
+            color: '#EEE',
+            fontWeight: 500,
+        };
+
+        const { title, labelPrice, width, height } = this.state;
+        const { resultObj } = this.props;
+
+        const series = new TimeSeries({
+            name: 'IPC Indicator',
+            columns: ['time', 'value'],
+            points: resultObj,
+        });
+
         return (
-            <div className="">
-                <h1>{username}</h1>
-                <LineChart
-                    data={this.props.resultObj}
-                    datePattern={'%d-%b-%y %H:%M'}
-                    xType={'time'}
-                    width={this.state.componentWidth}
-                    height={this.state.componentWidth / 2}
-                    axisLabels={{ x: 'Time', y: 'Price ($)' }}
-                    interpolate={'cardinal'}
-                    yDomainRange={[0, 5000]}
-                    axes
-                    grid
-                    style={{
-                        '.line0': {
-                            stroke: 'green',
-                        },
-                    }}
-                />
+            <div className="GBMGraph">
+                {(resultObj.length > 0) ?
+                    <ChartContainer
+                        title={title}
+                        style={chartStyle}
+                        timeRange={series.range()}
+                        timeAxisStyle={axisStyle}
+                        titleStyle={titleStyle}
+                        width={width}
+                        height={height}
+                    >
+                        <ChartRow height="300">
+                            <YAxis
+                                style={axisStyle}
+                                id="price"
+                                label={labelPrice}
+                                labelOffset={-20}
+                                showGrid
+                                transition={300}
+                                min={series.min()}
+                                max={series.max()}
+                                width="80"
+                                format="$,.1f"
+                                type="linear"
+                            />
+                            <Charts>
+                                <LineChart
+                                    axis="price"
+                                    series={series}
+                                />
+                            </Charts>
+                            <YAxis
+                                id="axis2"
+                                label={labelPrice}
+                                hideAxisLine
+                                transition={300}
+                                style={axisStyle}
+                                labelOffset={20}
+                                min={series.min()}
+                                max={series.max()}
+                                width="80"
+                                format="$,.1f"
+                                type="linear"
+                            />
+                        </ChartRow>
+                    </ChartContainer>
+                    :
+                    <h1>Loading.. please wait!</h1>
+                }
             </div>
         );
     }

@@ -22,10 +22,16 @@ class GBMTransformer {
             return [];
         }
 
-        return resultObj.map(g => ({
-            x: this.transformDate(g.Fecha),
-            y: g.Precio,
-        }));
+        const date = new Date('2018-10-24T06:03');
+        const date2 = new Date('2018-10-24T06:03:01.11-05:00');
+
+        console.log(':::::: date', new Date(1416787200000));
+        console.log(':::::: date2', new Date(1415577600000));
+
+        return resultObj.map(g => ([
+            Date.parse(g.Fecha),
+            g.Precio,
+        ]));
     }
 }
 

@@ -18,13 +18,11 @@ const AppGBM = require('../../client/App');
 class GBMRoutes {
     constructor(app) {
         function getGBMData(req, res, next) {
-            console.log('::::::: getGBMData');
             gbmApi.getGBMData().then((response) => {
                 if (!response.result) {
                     throw response;
                 }
 
-                console.log('getGBMData', response);
                 res.locals.resultObj =
                     gbmTransformer.transformGBMResulData(response.resultObj);
                 next();
