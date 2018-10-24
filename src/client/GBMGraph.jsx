@@ -138,7 +138,9 @@ class GBMGraph extends React.Component {
                         </ChartRow>
                     </ChartContainer>
                     :
-                    <h1>Loading.. please wait!</h1>
+                    <div className="waiting">
+                        <div className="loading" />
+                    </div>
                 }
             </div>
         );
@@ -146,7 +148,7 @@ class GBMGraph extends React.Component {
 }
 
 GBMGraph.propTypes = {
-    resultObj: React.PropTypes.shape({}),
+    resultObj: React.PropTypes.shape([]),
     getGBMData: React.PropTypes.func,
 };
 

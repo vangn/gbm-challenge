@@ -10,10 +10,87 @@ h1 {
   color: green;
 }
 
-.home-background {
-    background-image: url("../../public/assets/background.jpg");
-}
-
 .GBMGraph {
 
+}
+
+.gbm-login {
+    padding: 60px 0;
+}
+
+.gbm-login form {
+    margin: 0 auto;
+    max-width: 320px;
+}
+
+.waiting {
+    position: fixed;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    height: 100%;
+    background: rgba(0, 0, 0, .3);
+    bottom: 0;
+}
+
+.loading {
+    width: 160px;
+    height: 185px;
+    position: absolute;
+    top: -50px;
+    bottom: 0;
+    left: 27px;
+    right: 0;
+    margin: auto;
+    background-image: url("../../public/assets/loading.png");
+    -webkit-animation: play 0.8s steps(10) infinite;
+    -moz-animation: play 0.8s steps(10) infinite;
+    -ms-animation: play 0.8s steps(10) infinite;
+    -o-animation: play 0.8s steps(10) infinite;
+    animation: play 0.8s steps(10) infinite;
+}
+
+@-webkit-keyframes play {
+    from {
+        background-position: 0px;
+    }
+    to {
+        background-position: -5110px;
+    }
+}
+
+@-moz-keyframes play {
+    from {
+        background-position: 0px;
+    }
+    to {
+        background-position: -5110px;
+    }
+}
+
+@-ms-keyframes play {
+    from {
+        background-position: 0px;
+    }
+    to {
+        background-position: -5110px;
+    }
+}
+
+@-o-keyframes play {
+    from {
+        background-position: 0px;
+    }
+    to {
+        background-position: -5110px;
+    }
+}
+
+@keyframes play {
+    from {
+        background-position: 0px;
+    }
+    to {
+        background-position: -5110px;
+    }
 }
