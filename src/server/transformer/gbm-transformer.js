@@ -1,7 +1,7 @@
 class GBMTransformer {
 
     transformGBMResulData(resultObj) {
-        if (resultObj === undefined) {
+        if (resultObj === undefined || resultObj === null) {
             return [];
         }
 
