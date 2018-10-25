@@ -9,7 +9,9 @@ const {
     LineChart,
 } = require('react-timeseries-charts');
 
-const getGBMData = require('../shared/domain/gbm-domain').actions.getGBMData;
+const Header = require('./header');
+
+const getGBMData = require('../../shared/domain/gbm-domain').actions.getGBMData;
 
 class GBMGraph extends React.Component {
     constructor() {
@@ -19,6 +21,7 @@ class GBMGraph extends React.Component {
             labelPrice: 'Price ($)',
             width: 800,
             height: 182,
+            author: 'Author: Carlos Iván García Nieto',
         };
     }
 
@@ -43,6 +46,15 @@ class GBMGraph extends React.Component {
     }
 
     render() {
+        const {
+            title,
+            labelPrice,
+            width,
+            height,
+            author } = this.state;
+        const { resultObj } = this.props;
+        const authorLabel = ((resultObj.length > 0) ? author : '');
+
         const chartStyle = {
             background: '#201d1e',
             borderRadius: 8,
@@ -81,9 +93,6 @@ class GBMGraph extends React.Component {
             fontWeight: 500,
         };
 
-        const { title, labelPrice, width, height } = this.state;
-        const { resultObj } = this.props;
-
         const series = new TimeSeries({
             name: 'IPC Indicator',
             columns: ['time', 'value'],
@@ -92,6 +101,7 @@ class GBMGraph extends React.Component {
 
         return (
             <div className="GBMGraph">
+                <Header />
                 {(resultObj.length > 0) ?
                     <ChartContainer
                         title={title}
@@ -142,6 +152,9 @@ class GBMGraph extends React.Component {
                         <div className="loading" />
                     </div>
                 }
+                <div className="footer">
+                    <span>{authorLabel}</span>
+                </div>
             </div>
         );
     }

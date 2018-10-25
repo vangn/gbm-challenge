@@ -43,8 +43,8 @@ module.exports = {
                 loaders: ['style-loader', 'css-loader'],
             },
             {
-                test: /\.(png|jpg|woff|woff2|eot|ttf|svg)$/,
-                loader: 'url-loader?limit=100000',
+                test: /\.(png|gif|jpg|svg)$/,
+                use: 'file-loader?limit=65000&mimetype=application/octet-stream&name=img/[name].[ext]',
             },
         ],
     },

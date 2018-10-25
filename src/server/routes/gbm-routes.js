@@ -13,7 +13,7 @@ const requester = new Requester();
 const gbmApi = new GBMApi(requester);
 const gbmTransformer = new GBMTransformer();
 
-const AppGBM = require('../../client/App');
+const AppGBM = require('../../client/components/App');
 
 class GBMRoutes {
     constructor(app) {

@@ -4,7 +4,7 @@ const connect = require('react-redux').connect;
 const Login = require('./Login');
 const GBMGraph = require('./GBMGraph');
 
-const GBM_FLOWS = require('../shared/domain/constants/gbm-flows');
+const GBM_FLOWS = require('../../shared/domain/constants/gbm-flows');
 
 class App extends React.Component {
     render() {
