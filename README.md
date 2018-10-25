@@ -6,6 +6,10 @@ For the persistence of the data granted by the API obtained by the IPC (Índice 
 
 The app has a server-side rendering was implemented using EJS (Embedded JavaScript templating) As a template for the page to have an improvement in performance when rendering the components.
 
+The graph with the data was created with a open source components from React Timeseries Charts'
+
+`https://github.com/esnet/react-timeseries-charts/`
+
 Installation
 
 # Clone the repository
