@@ -10,9 +10,4 @@ const Header = () => (
     </div>
 );
 
-Header.propTypes = {
-    labels: React.PropTypes.arrayOf(Object),
-    countryCode: React.PropTypes.string,
-};
-
 module.exports = Header;

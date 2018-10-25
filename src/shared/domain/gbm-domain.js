@@ -25,17 +25,19 @@ const selectSection = sectionId => ({ type: EVENTS.SET_SELECTED_SECTION, section
 const setGBMData = result => ({ type: EVENTS.SET_GBM_DATA, result });
 
 const getGBMData = () => (dispatch) => {
-    // dispatch(showLoading());
     api.getGBMData()
         .then((response) => {
-            dispatch(setGBMData(response));
-            dispatch(selectSection(GBM_FLOWS.SHOW_GRAPH));
-            // dispatch(removeLoading());
+            if (response.length > 0) {
+                dispatch(setGBMData(response));
+                dispatch(selectSection(GBM_FLOWS.SHOW_GRAPH));
+            } else {
+                dispatch(selectSection(GBM_FLOWS.SHOW_ERROR));
+                dispatch(showError('The information is not available for now. Please try again later'));
+            }
         })
         .catch((error) => {
-            // dispatch(removeLoading());
-            dispatch(selectSection(GBM_FLOWS.SHOW_LOGIN));
-            dispatch(showError(error));
+            dispatch(selectSection(GBM_FLOWS.SHOW_ERROR));
+            dispatch(showError('The information is not available for now. Please try again later'));
         });
 };
 

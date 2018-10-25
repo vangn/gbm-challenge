@@ -9,7 +9,7 @@ const {
     LineChart,
 } = require('react-timeseries-charts');
 
-const Header = require('./header');
+const Header = require('./Header');
 
 const getGBMData = require('../../shared/domain/gbm-domain').actions.getGBMData;
 

@@ -20,6 +20,10 @@ h1 {
     float: left;
 }
 
+.error {
+    color: #6b0d05;
+}
+
 .gbm-login {
     padding: 60px 0;
 }

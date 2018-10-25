@@ -3,6 +3,7 @@ const connect = require('react-redux').connect;
 
 const Login = require('./Login');
 const GBMGraph = require('./GBMGraph');
+const Error = require('./Error');
 
 const GBM_FLOWS = require('../../shared/domain/constants/gbm-flows');
 
@@ -15,6 +16,8 @@ class App extends React.Component {
                         return <Login />;
                     case GBM_FLOWS.SHOW_GRAPH:
                         return <GBMGraph />;
+                    case GBM_FLOWS.SHOW_ERROR:
+                        return <Error />;
                     default :
                         return '';
                 }
